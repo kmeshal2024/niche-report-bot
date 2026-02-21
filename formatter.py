@@ -7,7 +7,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 
-from config import NICHE_NAME
+from config import NICHE_NAME, UNSUBSCRIBE_URL
 
 REPORTS_DIR = Path(__file__).resolve().parent / "reports"
 
@@ -89,7 +89,7 @@ def _wrap_email_html(body_html: str) -> str:
 {body_html}
     </div>
     <div class="footer">
-      <a href="#">Unsubscribe</a>
+      <a href="{UNSUBSCRIBE_URL}">Unsubscribe</a>
     </div>
   </div>
 </body>

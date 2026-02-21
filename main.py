@@ -29,6 +29,11 @@ def main() -> None:
     print("Loading config...")
     print(f"  Niche: {NICHE_NAME}")
     print(f"  Feeds: {len(RSS_FEEDS)} configured")
+    if len(RSS_FEEDS) == 0:
+        raise ValueError(
+            "No valid RSS feed URLs. Set RSS_FEEDS to comma-separated URLs, each starting with https:// or http:// "
+            "(e.g. https://news.google.com/rss/search?q=example&hl=en)."
+        )
 
     print("Scraping articles from RSS feeds...")
     articles = scrape_articles()

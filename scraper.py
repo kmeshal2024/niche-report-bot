@@ -34,6 +34,10 @@ def _normalize_title(title: str) -> str:
 
 def _fetch_feed(feed_url: str) -> ET.Element | None:
     """Fetch and parse RSS/Atom feed; return root element or None on failure."""
+    feed_url = (feed_url or "").strip()
+    if not feed_url or not (feed_url.startswith("http://") or feed_url.startswith("https://")):
+        logger.warning("Skipping invalid feed URL (must start with http:// or https://)")
+        return None
     try:
         req = Request(feed_url, headers={"User-Agent": "NicheReportBot/1.0"})
         with urlopen(req, timeout=15) as resp:
