@@ -1,0 +1,5 @@
+# Netlify config: serve landing page at site root
+[[redirects]]
+  from = "/"
+  to = "/landing.html"
+  status = 200
