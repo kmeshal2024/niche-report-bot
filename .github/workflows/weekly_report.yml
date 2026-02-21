@@ -1,0 +1,40 @@
+name: Weekly Niche Report
+
+on:
+  schedule:
+    # Every Monday at 6:00 AM UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Create .env from secrets
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+          echo "NICHE_NAME=${{ secrets.NICHE_NAME }}" >> .env
+          echo "NICHE_DESCRIPTION=${{ secrets.NICHE_DESCRIPTION }}" >> .env
+          echo "RSS_FEEDS=${{ secrets.RSS_FEEDS }}" >> .env
+          echo "REPORT_LANGUAGE=${{ secrets.REPORT_LANGUAGE }}" >> .env
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run report pipeline
+        run: python main.py
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-report
+          path: reports/
+          retention-days: 10
